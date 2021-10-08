@@ -1,11 +1,11 @@
 import 'package:flutter_self_development_app/models/task_model.dart';
 import 'package:sqflite/sqflite.dart';
 
-class TodoDatabase {
-  static final TodoDatabase instance = TodoDatabase._instance();
+class TaskDatabase {
+  static final TaskDatabase instance = TaskDatabase._instance();
   static Database _db;
 
-  TodoDatabase._instance();
+  TaskDatabase._instance();
 
   String tasksTable = 'task_table';
   String colId = 'id';
@@ -57,6 +57,13 @@ class TodoDatabase {
   Future<int> insertTask(Task task) async {
     Database db = await this.db;
     final int result = await db.insert(tasksTable, task.toMap());
+    return result;
+  }
+
+  Future<int> updateTask(Task task) async {
+    Database db = await this.db;
+    final int result = await db.update(tasksTable, task.toMap(),
+        where: '$colId = ?', whereArgs: [task.id]);
     return result;
   }
 
